@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dataset Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Dataset Recommender System</h1>
+        <form method="POST" class="search-form">
+            <input type="text" name="dataset_name" placeholder="Enter dataset title..." value="{{ query }}" required>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        {% if matched_title %}
+            <p class="match-info">🔎 Showing results similar to: <strong>{{ matched_title }}</strong></p>
+        {% endif %}
+
+        {% if recommendations %}
+            <h2>📊 Recommended Datasets:</h2>
+            <ul class="results-list">
+                {% for item in recommendations %}
+                    <li class="result-item">
+                        <strong class="title">{{ item.Dataset_name }}</strong><br>
+                        📎 <a href="{{ item.Dataset_link }}" target="_blank">Open Dataset</a><br>
+                        <div class="meta">
+                            📄 <strong>Type:</strong> {{ item.Type_of_file }} |
+                            📦 <strong>Size:</strong> {{ item.size }} |
+                            📁 <strong>Files:</strong> {{ item.No_of_files }}<br>
+                            🏅 <strong>Medal:</strong> {{ item.Medals }} |
+                            📅 <strong>Date:</strong> {{ item.Date }} |
+                            ⏰ <strong>Time:</strong> {{ item.Time }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% elif query %}
+            <p class="error">❌ No recommendations found for "<strong>{{ query }}</strong>".</p>
+        {% endif %}
+    </div>
+</body>
+</html>
